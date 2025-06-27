@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
+import { getAccountInfo } from "@/lib/grpcClientBrowser"
+
 
 export interface TokenMetadata {
   name: string
@@ -158,6 +160,15 @@ export const useWebSocket = () => {
         if (!mint) {
           console.log("No mint address found in token data, skipping...")
           return
+        }
+
+        // Fetch gRPC account information for the token
+        let grpcInfo: any = null
+        try {
+          grpcInfo = await getAccountInfo(mint)
+          console.log("📦 gRPC info:", grpcInfo)
+        } catch (err) {
+          console.error("gRPC fetch failed:", err)
         }
 
         let metadata: TokenMetadata | null = null
