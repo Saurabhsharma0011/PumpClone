@@ -81,3 +81,5 @@ just just need to create .env.local
 paste you supabse_project_url = **************************
 you supabase anon link = **************************
 
+## updated the bounding curve of each newly created token through gprc which i got through a github repo
+## will update the github link also later
