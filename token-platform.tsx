@@ -11,6 +11,8 @@ import { usePriceData } from "./hooks/usePriceData"
 import { ConnectionStatus } from "./components/ConnectionStatus"
 import { SocialLinks } from "./components/SocialLinks"
 import { PriceDisplay } from "./components/PriceDisplay"
+import { TokenTrade } from "./components/TokenTrade"
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 
 const TokenCard = ({
   token,
@@ -154,44 +156,42 @@ const TokenCard = ({
 
         {/* Social Links with Emojis */}
         <SocialLinks twitter={token.twitter} telegram={token.telegram} website={token.website} />
+        
+        {/* Buy/Sell Functionality */}
+        <div className="mt-3 pt-3 border-t border-slate-800">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                Trade {token.symbol}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-slate-900 border-slate-700 text-white max-w-md">
+              <DialogHeader>
+                <DialogTitle>Trade {token.name} ({token.symbol})</DialogTitle>
+              </DialogHeader>
+              <div className="mt-4">
+                {/* Import TokenTrade component */}
+                <div className="TokenTradeWrapper">
+                  {/* @ts-ignore */}
+                  <TokenTrade 
+                    tokenMint={token.mint} 
+                    tokenName={token.name} 
+                    tokenSymbol={token.symbol} 
+                    defaultTab="buy" 
+                  />
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       </CardContent>
     </Card>
   )
 }
 
-const WalletConnectDialog = () => {
+const WalletConnectButton = () => {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="bg-transparent border-slate-600 text-white hover:bg-slate-800">
-          <Wallet className="w-4 h-4 mr-2" />
-          Login
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="bg-slate-900 border-slate-700 text-white">
-        <DialogHeader>
-          <DialogTitle>Connect Your Wallet</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4 mt-4">
-          <Button className="w-full justify-start bg-slate-800 hover:bg-slate-700 border border-slate-600">
-            <div className="w-6 h-6 bg-orange-500 rounded mr-3"></div>
-            MetaMask
-          </Button>
-          <Button className="w-full justify-start bg-slate-800 hover:bg-slate-700 border border-slate-600">
-            <div className="w-6 h-6 bg-blue-500 rounded mr-3"></div>
-            WalletConnect
-          </Button>
-          <Button className="w-full justify-start bg-slate-800 hover:bg-slate-700 border border-slate-600">
-            <div className="w-6 h-6 bg-purple-500 rounded mr-3"></div>
-            Phantom
-          </Button>
-          <Button className="w-full justify-start bg-slate-800 hover:bg-slate-700 border border-slate-600">
-            <div className="w-6 h-6 bg-green-500 rounded mr-3"></div>
-            Create New Wallet
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+    <WalletMultiButton className="!bg-blue-600 !hover:bg-blue-700 !text-white !font-semibold !px-4 !py-2 !rounded !border-none !h-[38px]" />
   )
 }
 
@@ -248,6 +248,10 @@ export default function TokenPlatform() {
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-8">
             <h1 className="text-xl font-bold">TokenPlatform</h1>
+            <div className="flex gap-4">
+              <a href="/" className="text-white hover:text-blue-400 transition-colors">Home</a>
+              <a href="/trade" className="text-white hover:text-blue-400 transition-colors">Trade</a>
+            </div>
             <ConnectionStatus isConnected={isConnected} error={error} rawMessages={rawMessages} />
           </div>
 
@@ -271,7 +275,7 @@ export default function TokenPlatform() {
               <Plus className="w-4 h-4 mr-2" />
               Create Token
             </Button>
-            <WalletConnectDialog />
+            <WalletConnectButton />
           </div>
         </div>
       </nav>
