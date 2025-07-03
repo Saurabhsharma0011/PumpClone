@@ -83,3 +83,5 @@ you supabase anon link = **************************
 
 ## updated the bounding curve of each newly created token through gprc which i got through a github repo
 ## will update the github link also later
+
+# update the trading viewchart using gmgn api protal soo now we can fetch the it here is the docs link -  https://docs.bitquery.io/docs/examples/dextrades/evm-gmgn-api/
